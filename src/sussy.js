@@ -41,3 +41,8 @@ type();
 document.addEventListener("keydown",e=>{
   if(e.key==="Enter"){ cursor.style.display="none"; socials.style.display="flex"; loadBackgroundLazy(); }
 });
+// Newtab
+function openInNewTab(url) {
+    window.open(url, '_blank');
+}
+
