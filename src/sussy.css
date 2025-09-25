@@ -3,12 +3,12 @@
   --color2: #a3d9a5;
   --color3: #3e4a36;
   --color4: #d1a078;
-  --color5: rgba(163,217,165,0.05);
+  --color5: rgba(163, 217, 165, 0.05);
   --bg-image: none;
 }
 
 body {
-  margin: 0; 
+  margin: 0;
   padding: 0;
   font-family: 'VT323', monospace;
   background-color: var(--color1);
@@ -16,11 +16,11 @@ body {
   background-size: cover;
   background-position: center;
   color: var(--color2);
-  display: flex; 
-  flex-direction: column; 
-  justify-content: flex-start; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  min-height: 100vh; 
+  min-height: 100vh;
   overflow-x: hidden;
   transition: background 0.5s ease-in-out;
 }
@@ -34,7 +34,7 @@ body {
 }
 
 .cursor {
-  display: inline-block; 
+  display: inline-block;
   width: 10px;
   background: var(--color2);
   animation: blink 1s step-start infinite;
@@ -42,7 +42,9 @@ body {
 }
 
 @keyframes blink {
-  50% { background: transparent; }
+  50% {
+    background: transparent;
+  }
 }
 
 /* Contenedor social */
@@ -95,18 +97,21 @@ body {
   }
 }
 
-/* MÓVIL: Grid de cuadrados solo con iconos */
+/* MÓVIL: Grid de cuadrados solo con iconos - TAMAÑO 1.25x SVG */
 @media (max-width: 768px) {
   #socials .social-buttons {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 15px;
     width: 100%;
   }
 
   #socials .social-buttons button {
+    /* Tamaño basado en SVG (32px) * 1.25 = 40px + padding */
+    width: 100%;
     aspect-ratio: 1;
-    padding: 15px;
+    padding: 12px;
+    /* Padding reducido para mantener proporción 1.25x */
     border: none;
     border-radius: 8px;
     background: var(--color3);
@@ -117,10 +122,13 @@ body {
     justify-content: center;
     box-shadow: 0 0 5px var(--color2);
     transition: all 0.3s ease;
-    min-height: 80px;
+    /* El tamaño total será approx: 32px (SVG) + 24px (padding) = 56px ≈ 1.75x */
+    /* Para lograr exactamente 1.25x, ajustamos el padding */
+    min-height: auto;
   }
 
   #socials .social-buttons button svg {
+    /* SVG base size */
     width: 32px;
     height: 32px;
     fill: var(--color4);
@@ -131,19 +139,52 @@ body {
   }
 }
 
-/* Móvil muy pequeño: 2 columnas */
+/* Móvil muy pequeño: 2 columnas con ajuste de tamaño */
 @media (max-width: 480px) {
   #socials .social-buttons {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px;
   }
 
   #socials .social-buttons button {
-    min-height: 70px;
-    padding: 12px;
+    /* Para móviles pequeños, ajustamos a SVG más pequeño */
+    padding: 10px;
   }
 
   #socials .social-buttons button svg {
+    /* SVG ligeramente más pequeño en móviles muy pequeños */
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Versión alternativa más precisa - 1.25x EXACTO */
+/* Si quieres control más preciso, usa esta versión: */
+@media (max-width: 768px) {
+  #socials .social-buttons button.alternative-sizing {
+    /* Para SVG de 32px, 1.25x = 40px total */
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+    /* (40px - 32px) / 2 = 4px de padding */
+  }
+
+  #socials .social-buttons button.alternative-sizing svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  #socials .social-buttons button.alternative-sizing {
+    /* Para SVG de 28px, 1.25x = 35px total */
+    width: 35px;
+    height: 35px;
+    padding: 3.5px;
+    /* (35px - 28px) / 2 = 3.5px */
+  }
+
+  #socials .social-buttons button.alternative-sizing svg {
     width: 28px;
     height: 28px;
   }
@@ -188,39 +229,41 @@ body {
 /* Modal */
 .modal {
   display: none;
-  position: fixed; 
+  position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 10; 
+  background: rgba(0, 0, 0, 0.85);
+  overflow-y: auto;
+  overflow-x: auto;
+  z-index: 10;
   padding: 10px;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
 }
 
 .modal iframe {
-  width: 90%; 
-  height: 80%; 
-  border: none; 
+  width: 90%;
+  height: 80%;
+  border: none;
   border-radius: 8px;
 }
 
 .modal button.close {
-  position: absolute; 
-  top: 15px; 
-  right: 15px; 
-  padding: 8px 12px; 
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 8px 12px;
   cursor: pointer;
-  background: var(--color3); 
-  color: var(--color4); 
-  border: none; 
+  background: var(--color3);
+  color: var(--color4);
+  border: none;
   border-radius: 5px;
   z-index: 11;
 }
 
 /* CRT scanlines */
 body::after {
-  content: ""; 
-  position: fixed; 
+  content: "";
+  position: fixed;
   inset: 0;
   background: repeating-linear-gradient(to bottom, var(--color5) 0, var(--color5) 1px, transparent 2px);
   pointer-events: none;
@@ -228,17 +271,17 @@ body::after {
 }
 
 #fade {
-  position: fixed; 
-  inset: 0; 
-  background: var(--color1); 
+  position: fixed;
+  inset: 0;
+  background: var(--color1);
   opacity: 0;
-  transition: opacity 0.8s ease; 
-  pointer-events: none; 
+  transition: opacity 0.8s ease;
+  pointer-events: none;
   z-index: 5;
 }
 
-#fade.active { 
-  opacity: 1; 
+#fade.active {
+  opacity: 1;
 }
 
 /* Pantallas muy grandes - ajuste adicional */
@@ -246,10 +289,104 @@ body::after {
   #socials .social-buttons {
     gap: 20px;
   }
-  
+
   #socials .social-buttons button {
     min-width: 180px;
     padding: 15px 25px;
     font-size: 18px;
   }
+}
+
+.container {
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.cookie-container {
+  background: rgba(62, 74, 54, 0.9);
+  color: var(--color4);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px var(--color2);
+}
+
+.privacy-policy-h1 {
+  color: var(--color4);
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+.privacy-policy-h1 span {
+  font-size: 1.2rem;
+  color: var(--color2);
+  font-weight: normal;
+}
+
+.privacy-policy-h2 {
+  color: var(--color4);
+  font-size: 1.8rem;
+  margin: 25px 0 15px 0;
+  border-bottom: 1px solid var(--color2);
+  padding-bottom: 5px;
+}
+
+.privacy-policy-p {
+  color: var(--color2);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.privacy-policy-ol {
+  color: var(--color2);
+  padding-left: 20px;
+}
+
+.privacy-policy-ol li {
+  margin-bottom: 30px;
+}
+
+.privacy-policy-ol a {
+  color: var(--color4);
+  text-decoration: underline;
+}
+
+.privacy-policy-ol a:hover {
+  color: var(--color2);
+}
+
+.privacy-policy-ol ul {
+  margin: 15px 0;
+  padding-left: 20px;
+}
+
+.privacy-policy-ol ul li {
+  margin-bottom: 10px;
+  list-style-type: disc;
+}
+
+/* Elementos específicos de CookieYes */
+.cky-audit-table-element {
+  margin: 15px 0;
+}
+
+.cky-banner-element {
+  display: inline-block;
+  background: var(--color4);
+  color: var(--color3);
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 0 5px;
+  font-weight: bold;
+}
+
+.cky-banner-element:hover {
+  background: var(--color2);
+  color: var(--color1);
 }
