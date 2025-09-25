@@ -1,3 +1,4 @@
 User-agent: *
-Disallow: 
-Sitemap: https://shyrlox.com/sitemap.xml
+Allow: /
+
+Sitemap: https://www.shyrlox.com/sitemap.xml
