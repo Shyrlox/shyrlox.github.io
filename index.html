@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shyrlox - Social Networks</title>
+  <title id="page-title">Shyrlox - Social Networks</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -25,46 +25,76 @@
   <meta name="theme-color" content="#ffffff">
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Shyrlox - Creador de contenido en Canarias, con experiencia en producción de eventos e IT General. Redes sociales: Twitch, Twitter, Instagram, YouTube, TikTok.">
-  <meta name="keywords" content="Shyrlox, contenido, Twitch, Twitter, Instagram, YouTube, Steam, TikTok, Canarias, eventos, IT, Analisis de Videojuegos">
+  <meta name="description" id="meta-description" content="">
+  <meta name="keywords" id="meta-keywords" content="">
   <meta name="author" content="Shyrlox">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Shyrlox - Social Networks">
-  <meta property="og:description" content="Creador de contenido en Canarias, con experiencia en producción de eventos e IT General.">
+  <meta property="og:title" id="og-title" content="">
+  <meta property="og:description" id="og-description" content="">
   <meta property="og:url" content="https://www.shyrlox.com/">
-  <meta property="og:image" content="https://www.shyrlox.com/src/logo.webp">
+  <meta property="og:image" id="og-image" content="">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Shyrlox - Social Networks">
-  <meta name="twitter:description" content="Creador de contenido en Canarias, con experiencia en producción de eventos e IT General.">
-  <meta name="twitter:image" content="https://www.shyrlox.com/src/logo.webp">
+  <meta name="twitter:title" id="twitter-title" content="">
+  <meta name="twitter:description" id="twitter-description" content="">
+  <meta name="twitter:image" id="twitter-image" content="">
 
   <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Shyrlox",
-    "url": "https://www.shyrlox.com/",
-    "sameAs": [
-      "https://www.twitch.tv/shyrlox",
-      "https://twitter.com/shyrlox",
-      "https://www.instagram.com/shyrlox",
-      "https://www.youtube.com/@shyrlox",
-      "https://steamcommunity.com/id/Shyrlox/",
-      "https://www.tiktok.com/@shyrlox",
-      "https://myanimelist.net/profile/shyrlox"
-    ],
-    "jobTitle": "Creador de contenido canario, IT Guy, Producción de eventos",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Madrid",
-      "addressRegion": "ES"
-    }
-  }
+  <script type="application/ld+json" id="json-ld">
+  </script>
+
+  <!-- Script para generar meta tags dinámicamente -->
+  <script>
+    const config = {
+      name: "Shyrlox",
+      title: "Shyrlox - Social Networks",
+      description: "Shyrlox es un creador de contenido especializado en eventos LAN Party y juegos de Disparos.",
+      keywords: "Shyrlox, creador de contenido, creador de contenido canario, eventos, IT, consultor, Twitch, YouTube, Instagram, TikTok, Shooter Videogame, CS2",
+      author: "Shyrlox",
+      url: "https://www.shyrlox.com/",
+      image: "https://www.shyrlox.com/src/logo.webp",
+      location: {
+        city: "Madrid",
+        country: "ES"
+      },
+      socialProfiles: [
+        "https://twitch.tv/shyrlox",
+        "https://twitter.com/shyrlox",
+        "https://www.instagram.com/shyrlox",
+        "https://www.youtube.com/@shyrlox",
+        "https://tiktok.com/@shyrlox"
+      ]
+    };
+
+    // Actualiza meta tags
+    document.getElementById('page-title').textContent = config.title;
+    document.getElementById('meta-description').setAttribute('content', config.description);
+    document.getElementById('meta-keywords').setAttribute('content', config.keywords);
+    document.getElementById('og-title').setAttribute('content', config.title);
+    document.getElementById('og-description').setAttribute('content', config.description);
+    document.getElementById('og-image').setAttribute('content', config.image);
+    document.getElementById('twitter-title').setAttribute('content', config.title);
+    document.getElementById('twitter-description').setAttribute('content', config.description);
+    document.getElementById('twitter-image').setAttribute('content', config.image);
+
+    // Genera JSON-LD
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": config.name,
+      "url": config.url,
+      "sameAs": config.socialProfiles,
+      "jobTitle": "Creador de contenido, Cloud IT Guy, Producción de eventos",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": config.location.city,
+        "addressCountry": config.location.country
+      }
+    };
+    document.getElementById('json-ld').textContent = JSON.stringify(jsonLd);
   </script>
 </head>
 
