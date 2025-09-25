@@ -1,86 +1,161 @@
 :root {
-  --color1: #1a1208;  /* fondo tierra oscuro */
-  --color2: #a3d9a5;  /* texto terminal verde jade */
-  --color3: #3e4a36;  /* botones fondo oscuro */
-  --color4: #d1a078;  /* letras botones terracota */
-  --color5: rgba(163,217,165,0.05); /* scanlines */
-  --bg-image: none;  /* lazy load background */
+  --color1: #1a1208;
+  --color2: #a3d9a5;
+  --color3: #3e4a36;
+  --color4: #d1a078;
+  --color5: rgba(163,217,165,0.05);
+  --bg-image: none;
 }
 
 body {
-  margin:0; padding:0;
-  font-family:'VT323', monospace;
+  margin: 0; 
+  padding: 0;
+  font-family: 'VT323', monospace;
   background-color: var(--color1);
   background-image: var(--bg-image);
   background-size: cover;
   background-position: center;
   color: var(--color2);
-  display:flex; flex-direction:column; justify-content:flex-start; align-items:center;
-  min-height:100vh; overflow-x:hidden;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: center;
+  min-height: 100vh; 
+  overflow-x: hidden;
   transition: background 0.5s ease-in-out;
 }
 
 #console {
   white-space: pre-wrap;
-  margin-top:10px;
+  margin-top: 10px;
   font-size: clamp(16px, 2vw, 24px);
-  text-align:center;
+  text-align: center;
+  min-height: 100px;
 }
+
 .cursor {
-  display:inline-block; width:10px;
+  display: inline-block; 
+  width: 10px;
   background: var(--color2);
-  animation:blink 1s step-start infinite;
-  margin-left:2px;
+  animation: blink 1s step-start infinite;
+  margin-left: 2px;
 }
-@keyframes blink {50% {background:transparent;}}
+
+@keyframes blink {
+  50% { background: transparent; }
+}
 
 /* Contenedor social */
 #socials {
-  display: none; /* oculto hasta que JS lo active */
-  grid-template-columns: 1fr;
-  gap: 10px;
+  display: none;
   width: 90%;
   max-width: 600px;
   margin-top: 20px;
-  justify-items: center;
+  margin-bottom: 80px;
 }
 
-/* Grid interno botones sociales */
-#socials .social-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 10px;
-  width: 100%;
+/* ESCRITORIO: Fila horizontal con icono + texto */
+@media (min-width: 769px) {
+  #socials .social-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  #socials .social-buttons button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: var(--color3);
+    color: var(--color4);
+    font-size: clamp(14px, 1.5vw, 18px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 0 5px var(--color2);
+    transition: all 0.3s ease;
+    min-width: 160px;
+    text-align: center;
+  }
+
+  #socials .social-buttons button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--color4);
+    flex-shrink: 0;
+  }
+
+  #socials .social-buttons button span {
+    display: inline;
+    text-align: center;
+  }
 }
 
-#socials .social-buttons button {
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: var(--color3);
-  color: var(--color4);
-  font-size: clamp(12px, 2vw, 16px);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  box-shadow: 0 0 5px var(--color2);
-  text-align: center;
-  transition: box-shadow 0.3s ease;
+/* MÓVIL: Grid de cuadrados solo con iconos */
+@media (max-width: 768px) {
+  #socials .social-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+
+  #socials .social-buttons button {
+    aspect-ratio: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: var(--color3);
+    color: var(--color4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px var(--color2);
+    transition: all 0.3s ease;
+    min-height: 80px;
+  }
+
+  #socials .social-buttons button svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--color4);
+  }
+
+  #socials .social-buttons button span {
+    display: none;
+  }
 }
 
-#socials .social-buttons button svg {
-  width: 24px;
-  height: 24px;
-  fill: var(--color4);
+/* Móvil muy pequeño: 2 columnas */
+@media (max-width: 480px) {
+  #socials .social-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  #socials .social-buttons button {
+    min-height: 70px;
+    padding: 12px;
+  }
+
+  #socials .social-buttons button svg {
+    width: 28px;
+    height: 28px;
+  }
 }
 
+/* Comportamiento hover común para ambos */
 #socials .social-buttons button:hover {
-  box-shadow: 0 0 10px var(--color2);
+  box-shadow: 0 0 15px var(--color2);
+  transform: translateY(-2px);
 }
 
-/* Botones legales fijos al bottom */
+/* Botones legales fijos */
 #socials .legal-buttons {
   display: flex;
   justify-content: center;
@@ -90,18 +165,20 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
+  width: auto;
 }
 
 #socials .legal-buttons button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   border: none;
   border-radius: 6px;
   background: var(--color3);
   color: var(--color4);
-  font-size: clamp(10px, 1.5vw, 14px);
+  font-size: clamp(12px, 1.5vw, 14px);
   cursor: pointer;
   box-shadow: 0 0 5px var(--color2);
   transition: box-shadow 0.3s ease;
+  text-align: center;
 }
 
 #socials .legal-buttons button:hover {
@@ -111,55 +188,68 @@ body {
 /* Modal */
 .modal {
   display: none;
-  position: fixed; inset:0;
+  position: fixed; 
+  inset: 0;
   background: rgba(0,0,0,0.85);
-  z-index:10; padding:10px;
-  justify-content:center; align-items:center;
+  z-index: 10; 
+  padding: 10px;
+  justify-content: center; 
+  align-items: center;
 }
+
 .modal iframe {
-  width:90%; height:80%; border:none; border-radius:8px;
+  width: 90%; 
+  height: 80%; 
+  border: none; 
+  border-radius: 8px;
 }
+
 .modal button.close {
-  position:absolute; top:5px; right:5px; padding:5px 10px; cursor:pointer;
-  background: var(--color3); color: var(--color4); border:none; border-radius:5px;
+  position: absolute; 
+  top: 15px; 
+  right: 15px; 
+  padding: 8px 12px; 
+  cursor: pointer;
+  background: var(--color3); 
+  color: var(--color4); 
+  border: none; 
+  border-radius: 5px;
+  z-index: 11;
 }
 
 /* CRT scanlines */
 body::after {
-  content:""; position:fixed; inset:0;
+  content: ""; 
+  position: fixed; 
+  inset: 0;
   background: repeating-linear-gradient(to bottom, var(--color5) 0, var(--color5) 1px, transparent 2px);
-  pointer-events:none;
+  pointer-events: none;
+  z-index: 1;
 }
 
 #fade {
-  position:fixed; inset:0; background: var(--color1); opacity:0;
-  transition:opacity 0.8s ease; pointer-events:none; z-index:5;
+  position: fixed; 
+  inset: 0; 
+  background: var(--color1); 
+  opacity: 0;
+  transition: opacity 0.8s ease; 
+  pointer-events: none; 
+  z-index: 5;
 }
-#fade.active { opacity:1; }
 
-/* Responsive escritorio */
-@media(min-width:768px){
+#fade.active { 
+  opacity: 1; 
+}
+
+/* Pantallas muy grandes - ajuste adicional */
+@media (min-width: 1200px) {
   #socials .social-buttons {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
   }
-}
-
-/* Responsive móvil: una columna, solo iconos */
-@media(max-width:480px) {
-  #socials .social-buttons {
-    grid-template-columns: 1fr;
+  
+  #socials .social-buttons button {
+    min-width: 180px;
+    padding: 15px 25px;
+    font-size: 18px;
   }
-  #socials .social-buttons button span {
-    display: none;
-  }
-  #socials .social-buttons button svg {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-/* Altura baja: solo iconos */
-@media(max-height:500px) {
-  #socials .social-buttons button span { display:none; }
-  #socials .social-buttons button svg { width:28px; height:28px; }
 }
