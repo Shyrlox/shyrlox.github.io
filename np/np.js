@@ -1,6 +1,4 @@
-
-<script>
-const FETCH_URL = "http://localhost:1900/";
+const FETCH_URL = "https://tuna.lab.shyrlox.com";
 const FETCH_INTERVAL_MS = 800; // Menos de 1s para mejor respuesta
 const PROGRESS_UPDATE_MS = 100;
 
@@ -202,4 +200,3 @@ setInterval(() => {
         updateNowPlaying();
     }
 }, 5000);
-</script>
