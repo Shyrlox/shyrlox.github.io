@@ -101,9 +101,11 @@ body {
 }
 
 .text-container {
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    padding: 0 20px;   /* antes 10px, ahora 20px para más margen */
+    box-sizing: border-box;
 }
 .text-inner {
   display: inline-block;
