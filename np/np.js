@@ -104,25 +104,32 @@ function shouldUpdateImages(data, newSignature) {
     
     return hasGoodCover && previouslyHadBadCover;
 }
-
 function applyMarquee(containerId, text) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  const inner = container.querySelector('.text-inner');
-  if (!inner) return;
-  
-  inner.textContent = text || '';
-  
-  // Si el texto es más ancho que el contenedor, aplicamos marquee
-  if (inner.scrollWidth > container.clientWidth) {
-    inner.classList.add('marquee');
-    // Velocidad dinámica: cuanto más largo, más lento (o más rápido, ajusta el divisor)
-    const duration = Math.max(4, inner.scrollWidth / 50);
-    inner.style.animationDuration = duration + 's';
-  } else {
-    inner.classList.remove('marquee');
-    inner.style.animationDuration = '';
-  }
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const inner = container.querySelector('.text-inner');
+    if (!inner) return;
+    if (text && text.length > 20) {  
+        inner.textContent = text + '  ' + text;  
+    } else {
+        inner.textContent = text || '';
+    }
+    const measure = document.createElement('span');
+    measure.style.cssText = 'visibility:hidden; white-space:nowrap; position:absolute;';
+    measure.textContent = text || '';
+    document.body.appendChild(measure);
+    const textWidth = measure.offsetWidth;
+    document.body.removeChild(measure);
+    if (textWidth > container.clientWidth) {
+        inner.classList.add('marquee');
+
+        const duration = Math.max(6, textWidth / 40);
+        inner.style.animationDuration = duration + 's';
+    } else {
+        inner.classList.remove('marquee');
+        inner.style.animationDuration = '';
+        inner.textContent = text || '';
+    }
 }
 
 function updateUI(result) {
