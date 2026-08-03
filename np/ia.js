@@ -4,7 +4,7 @@
 // ============================================================
 
 // ------------------- CONSTANTES ------------------------------
-const FETCH_URL = "http://tuna.lab.shyrlox.com/";   // Cambiar según tu endpoint
+const FETCH_URL = "https://tuna.lab.shyrlox.com/";   // Cambiar según tu endpoint
 const FETCH_INTERVAL_MS = 800;    // Cada cuánto se consulta el servidor
 
 // ------------------- ESTADO GLOBAL ---------------------------
