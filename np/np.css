@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    width: 1920px;
+    height: 539px;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+}
+#background {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1920px; height: 539px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(40px) brightness(0.5);
+    transform: scale(1.2);
+    z-index: -1;
+    transition: background-image 0.5s ease-in-out;
+}
+#content {
+    position: relative;
+    width: 1920px; height: 539px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    padding: 40px 80px;
+    box-sizing: border-box;
+}
+#cover {
+    width: 450px;
+    height: 450px;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+    flex-shrink: 0;
+    transition: background-image 0.5s ease-in-out;
+}
+#info {
+    flex: 1;
+    overflow: hidden;
+}
+#title {
+    font-size: 88px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#artist {
+    font-size: 52px;
+    opacity: 0.9;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#album {
+    font-size: 42px;
+    opacity: 0.75;
+    margin-bottom: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#timeline {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+#time-passed, #length {
+    font-size: 36px;
+    min-width: 90px;
+    text-align: center;
+}
+#progressbar {
+    flex: 1;
+    height: 14px;
+    border-radius: 14px;
+    background-color: #ffffff50;
+    position: relative;
+}
+#progress {
+    height: 100%;
+    border-radius: 14px;
+    background-color: #fff;
+    width: 0%;
+    transition: width 0.3s linear;
+}
+#status-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #00ff00;
+}
+
+.text-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.text-inner {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+.text-inner.marquee {
+  animation: marquee 10s ease-in-out infinite alternate;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
