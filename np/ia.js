@@ -1,23 +1,14 @@
 // ============================================================
 // np.js - Now Playing Viewer para Tuna (Spotify / WMC)
-// Compatible con HTTP y HTTPS (usar HTTP para evitar mixed content)
+// Versión sin interpolación: usa el progress del JSON directamente
 // ============================================================
 
 // ------------------- CONSTANTES ------------------------------
-const FETCH_URL = "https://tuna.lab.shyrlox.com/";   // Cambiar según tu endpoint
+const FETCH_URL = "http://tuna.lab.shyrlox.com/";   // Cambiar según tu endpoint
 const FETCH_INTERVAL_MS = 800;    // Cada cuánto se consulta el servidor
-const PROGRESS_UPDATE_MS = 100;   // Suavizado de la barra
 
 // ------------------- ESTADO GLOBAL ---------------------------
 let currentSongSignature = "";
-let interpolationData = {
-    baseProgress: 0,
-    baseTimestamp: 0,
-    duration: 0,
-    isPlaying: false,
-    lastPlaybackTime: "",
-    source: "unknown"
-};
 
 // ------------------- FUNCIONES AUXILIARES --------------------
 function updateStatus(message) {
@@ -69,19 +60,6 @@ function applyMarquee(containerId, text) {
     }
 }
 
-// ------------------- INTERPOLACIÓN DE PROGRESO ---------------
-function updateLocalProgress() {
-    if (!interpolationData.isPlaying || interpolationData.duration <= 0) {
-        return;
-    }
-    const now = Date.now();
-    const elapsed = now - interpolationData.baseTimestamp;
-    const estimated = interpolationData.baseProgress + elapsed;
-    const safe = Math.min(estimated, interpolationData.duration);
-    document.getElementById("time-passed").textContent = msToTime(safe);
-    document.getElementById("progress").style.width = (safe / interpolationData.duration * 100) + "%";
-}
-
 // ------------------- FETCH Y ACTUALIZACIÓN UI -----------------
 async function fetchNowPlaying() {
     try {
@@ -102,9 +80,12 @@ function getSongSignature(data) {
 function shouldUpdateImages(data, newSignature) {
     if (newSignature !== currentSongSignature) return true;
     const hasGoodCover = data.cover_path && data.cover_path !== "n/a" && !data.cover_path.includes('localhost');
-    const previouslyHadBadCover = interpolationData.source === "wmc";
+    const previouslyHadBadCover = (interpolationData && interpolationData.source === "wmc");
     return hasGoodCover && previouslyHadBadCover;
 }
+
+// Guardamos el source anterior para detectar cambio de WMC a Spotify
+let previousSource = "unknown";
 
 function updateUI(result) {
     if (result.error) {
@@ -121,22 +102,10 @@ function updateUI(result) {
     document.getElementById("album").textContent = data.album || "";
     document.getElementById("length").textContent = msToTime(data.duration);
 
-    // ----- Progreso (usamos data.progress directamente, sin playback_time) -----
+    // ----- Progreso: usar data.progress directamente (sin interpolación) -----
     const exactProgress = data.progress || 0;
-
-    // Actualizar barra y tiempo
     document.getElementById("time-passed").textContent = msToTime(exactProgress);
     document.getElementById("progress").style.width = (data.duration > 0 ? (exactProgress / data.duration * 100) : 0) + "%";
-
-    // Guardar para interpolación
-    interpolationData = {
-        baseProgress: exactProgress,
-        baseTimestamp: Date.now(),
-        duration: data.duration || 0,
-        isPlaying: nowPlaying,
-        lastPlaybackTime: data.playback_time || "",
-        source: source
-    };
 
     // ----- Estado en la esquina -----
     if (nowPlaying) {
@@ -149,7 +118,9 @@ function updateUI(result) {
     applyMarquee('title', data.title || 'No song');
 
     // ----- Imágenes (cover y fondo) -----
-    if (shouldUpdateImages(data, newSignature)) {
+    // Si cambia la canción o pasamos de WMC (cover_url local) a Spotify (cover_path remoto)
+    const coverChanged = shouldUpdateImages(data, newSignature);
+    if (coverChanged || newSignature !== currentSongSignature) {
         currentSongSignature = newSignature;
         let coverUrl = data.cover_path && data.cover_path !== "n/a" ? data.cover_path : data.cover_url;
         if (coverUrl && coverUrl !== "n/a") {
@@ -159,6 +130,8 @@ function updateUI(result) {
             document.getElementById("background").style.backgroundImage = `url("${uniqueCoverUrl}")`;
         }
     }
+
+    previousSource = source;
 }
 
 async function updateNowPlaying() {
@@ -174,12 +147,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualización periódica de datos
     setInterval(updateNowPlaying, FETCH_INTERVAL_MS);
 
-    // Suavizado de la barra (interpolación)
-    setInterval(updateLocalProgress, PROGRESS_UPDATE_MS);
-
     // Recuperación automática si el estado se queda "colgado"
     setInterval(() => {
-        if (interpolationData.source === "unknown" || document.getElementById("title").textContent === "No song") {
+        const titleEl = document.getElementById("title");
+        if (!titleEl || titleEl.textContent === "No song") {
             updateStatus("🔃 Reconectando...");
             updateNowPlaying();
         }
